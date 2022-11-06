@@ -17,8 +17,9 @@ class LightControlPlugin(octoprint.plugin.StartupPlugin,
         new_status = 1 if self._settings.get(["status"]) == 0 else 0
 
         octoprint.plugin.SettingsPlugin.on_settings_save(self, dict(status=new_status))
-        # arduino = serial.Serial(port=port, baudrate=115200, timeout=.1)
-        # arduino.write(bytes(self._settings.get(["status"]), 'utf-8'))
+        
+        arduino = serial.Serial(port=port, baudrate=115200, timeout=.1)
+        arduino.write(bytes(self._settings.get(["status"]), 'utf-8'))
 
         self._logger.info(f'switch {port}, {new_status}')
 
