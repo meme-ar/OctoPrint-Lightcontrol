@@ -1,4 +1,4 @@
-const int transistorPin = 12; // the pin that the LED is attached to
+const int transistorPin = 7; // the pin that the base is attached to
 int incomingByte;      // a variable to read incoming serial data into
 
 void setup()
