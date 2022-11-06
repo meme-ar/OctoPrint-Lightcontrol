@@ -7,6 +7,6 @@ Activates a lightbulb near the printer with a click in the navbar lightbulb. Use
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
 or manually using this URL:
 
-    https://github.com/you/OctoPrint-Light-control/archive/master.zip
+    https://github.com/meme-ar/OctoPrint-Lightcontrol/archive/refs/heads/main.zip
 
 
