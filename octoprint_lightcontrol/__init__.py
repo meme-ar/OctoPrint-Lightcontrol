@@ -1,4 +1,6 @@
 # coding=utf-8
+import threading
+import time
 from __future__ import absolute_import
 
 import octoprint.plugin
@@ -13,13 +15,20 @@ class LightControlPlugin(octoprint.plugin.StartupPlugin,
                        octoprint.plugin.SimpleApiPlugin,
                        octoprint.plugin.AssetPlugin):
 
+    def force_turn_off(self):
+        octoprint.plugin.SettingsPlugin.on_settings_save(self, dict(status=0))
+        time.sleep(self._settings.get(["timeout"]))
+        self.arduino.write('0'.encode('utf-8'))
+        self.th.join()
+
     def lightswitch(self, port):
         new_status = 1 if self._settings.get(["status"]) == 0 else 0
 
         octoprint.plugin.SettingsPlugin.on_settings_save(self, dict(status=new_status))
         
-        arduino = serial.Serial(port=port, baudrate=115200, timeout=.1)
-        arduino.write(bytes(self._settings.get(["status"]), 'utf-8'))
+        self.arduino = serial.Serial(port=port, baudrate=9600, timeout=.1)
+        self.arduino.write(f'{self._settings.get(["status"])}'.encode('utf-8'))
+        self.th = threading.Thread(target=self.force_turn_off)
 
         self._logger.info(f'switch {port}, {new_status}')
 
@@ -28,7 +37,7 @@ class LightControlPlugin(octoprint.plugin.StartupPlugin,
 
     # settings
     def get_settings_defaults(self):
-        return dict(port="COM4", status=0)
+        return dict(port="COM4", status=0, timeout=600)
 
     # templates
     def get_template_configs(self):
