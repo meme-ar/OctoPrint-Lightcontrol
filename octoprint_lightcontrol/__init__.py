@@ -1,7 +1,7 @@
 # coding=utf-8
+from __future__ import absolute_import
 import threading
 import time
-from __future__ import absolute_import
 
 import octoprint.plugin
 import serial
